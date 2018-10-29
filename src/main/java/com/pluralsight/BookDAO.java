@@ -44,6 +44,21 @@ public class BookDAO {
       return book;
     }
 
+    public void deleteBook(int id) {
+        String sql = "DELETE FROM book WHERE id = ?";
+
+        try {
+            PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+            statement.setInt(1, id);
+            
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<Book> listAllBooks() {
       ArrayList<Book> listBook = new ArrayList<>();
 

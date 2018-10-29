@@ -33,7 +33,7 @@ public class ControllerServlet extends HttpServlet {
 			bookDAO = new BookDAO(dbConnection.getConnection());
     }
 
-		public void destroy() {
+    public void destroy() {
 			dbConnection.disconnect();
 		}
 
@@ -52,16 +52,20 @@ public class ControllerServlet extends HttpServlet {
 			switch(action) {
 				case "/admin":
 					 showBookAdmin(request, response);
-           break;
-			  case "/new":
+					 break;
+			    case "/new":
 					showNewForm(request, response);
-          break;
+                    break;
 				case "/insert":
 					insertBook(request, response);
-          break;
-        default:
-				   listBooks(request, response);
-           break;
+                    break;
+                case "/delete":
+                    deleteBook(request, response);
+                    break;
+
+                default:
+                    listBooks(request, response);
+                    break;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -69,6 +73,17 @@ public class ControllerServlet extends HttpServlet {
 		}
 	}
 
+    private void deleteBook(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+	    int id = Integer.parseInt(request.getParameter("id"));
+	    bookDAO.deleteBook(id);
+
+	    response.sendRedirect("list");
+
+
+
+    }
 	private void showBookAdmin(HttpServletRequest request, HttpServletResponse response)
 			throws ClassNotFoundException, SQLException, ServletException, IOException {
 		ArrayList<Book> books_list = bookDAO.listAllBooks();
